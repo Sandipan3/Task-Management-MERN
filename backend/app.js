@@ -10,7 +10,12 @@ const port = 3000;
 //Express json parsing 
 app.use(express.json());
 // app.use(express.urlencoded({extended:true}))
-mongoose.connect('mongodb://localhost:27017/');
+mongoose.connect('mongodb://localhost:27017/')
+.then(console.log('mongo connected'))
+.catch((err)=>{
+    console.error(err);
+})
+;
 
 app.use(cors({
     origin : 'http://localhost:3000', 
