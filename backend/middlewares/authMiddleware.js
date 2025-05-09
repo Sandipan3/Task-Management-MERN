@@ -23,6 +23,9 @@ export function authMiddleWare(req,res,next){
         //jwt part : verify token
         const decodedPayload = jwt.verify(decryptedToken,secretKey) 
         console.log(decodedPayload);
+        console.log('----end-of-miidleware--');
+        
+
         req.user = decodedPayload
         next();
 
