@@ -1,40 +1,38 @@
-import CryptoJS from "crypto-js"
-import jwt from "jsonwebtoken"
+import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken";
 
 //authMiddleWare for JWT token validation for protecting routes and resources (i.e. tasks)
 
-export function authMiddleWare(req,res,next){
+export function authMiddleWare(req, res, next) {
+  //get jwt auth token
+  const token =
+    req.header("x-auth-token") || req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
+  //validate jwt token
+  try {
+    //extra cryptoJs Decryption (custom)
+    const SECRET_KEY = process.env.SECRET_KEY;
+    const bytes = CryptoJS.AES.decrypt(token, SECRET_KEY);
+    const decryptedToken = bytes.toString(CryptoJS.enc.Utf8);
 
-    //get jwt auth token
-    const token = req.header('x-auth-token') ||
-                  req.headers.authorization?.split(' ')[1];
-    if(!token){
-        return res.status(403).json({
-            message : "Unauthorized"
-        })
-    }
-    //validate jwt token
-    try {
-        //extra cryptoJs Decryption (custom)
-        const secretKey = 'hidden'
-        const bytes = CryptoJS.AES.decrypt(token, secretKey)
-        const decryptedToken = bytes.toString(CryptoJS.enc.Utf8)
+    //jwt part : verify token
+    const decodedPayload = jwt.verify(decryptedToken, SECRET_KEY);
+    console.log(decodedPayload);
+    console.log("----end-of-miidleware--");
 
-        //jwt part : verify token
-        const decodedPayload = jwt.verify(decryptedToken,secretKey) 
-        console.log(decodedPayload);
-        console.log('----end-of-miidleware--');
-        
+    req.user = decodedPayload;
+    console.log("Middleware: User   " + req.user);
+    console.log("Middleware: User id  " + req.user._id);
 
-        req.user = decodedPayload
-        next();
-
-    } catch (error) {
-
-        console.log(error);
-        return res.status(403).json({
-            message : "Unauthorized"
-        })
-        
-    }
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
 }
