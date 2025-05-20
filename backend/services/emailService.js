@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import { text } from "express";
 dotenv.config();
 
 //import environment variables
@@ -22,27 +23,24 @@ const transporter = nodemailer.createTransport({
 });
 
 transporter.verify((error, success) => {
-  if (success) console.log("SMTP success", success);
+  if (success) console.log("SMTP success from emailservice.js ", success);
   else console.log("SMTP Error", error);
 });
 
-export const sendEmail = async (to, subject, content) => {
-  const mailOptions = {
-    from: SMTP_FROM,
-    to,
-    subject,
-    content,
-  };
+console.log("transpoter verification done now going to send email");
 
+export const sendEmail = async (to, subject, content) => {
   try {
+    const mailOptions = {
+      from: SMTP_FROM,
+      to,
+      subject,
+      text: "this is a text ",
+      html: content,
+    };
+
     await transporter.sendMail(mailOptions);
-    // await transporter.sendMail((mailOptions, error) => {
-    //   if (error) {
-    //     console.log("Error during mail sending", error);
-    //     throw error;
-    //   }
-    // });
   } catch (error) {
-    console.log("Error received that happened during mail send");
+    console.log("Error received that happened during mail send", error);
   }
 };

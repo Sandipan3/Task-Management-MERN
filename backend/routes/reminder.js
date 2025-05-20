@@ -1,6 +1,7 @@
 import { sendEmail } from "../services/emailService.js";
 import express from "express";
 import Task from "../models/Task.js";
+import User from "../models/User.js";
 
 export const router = express.Router();
 
@@ -13,36 +14,31 @@ router.post("/send-deadline-reminders", async (req, res) => {
     // 3. completed = false  Filter out all completed tasks and considering all pending tasks
 
     const tasks = await Task.find({
-      $and: [
-        //{ userId: req.user._id },
-        { completed: false },
-        { deadline: { $lt: tomorrow } },
-      ],
+      $and: [{ completed: false }, { deadline: { $lt: tomorrow } }],
     });
 
-    await tasks.forEach(async (task) => {
-      const userEmail = task.userId.email;
-      const message = `
-        <h3>⏰ Task Reminder</h3>
+    tasks.forEach(async (task) => {
+      //find email
+      const user = await User.findOne({ _id: task.userId });
+
+      if (user.email) {
+        await sendEmail(
+          user.email,
+          `Reminder: ${task.title} deadline approaching`,
+          `<h3>⏰ Task Reminder</h3>
         <p>Your task <strong>"${
           task.title
         }"</strong> is due by <strong>${new Date(
-        task.deadline
-      ).toLocaleString()}</strong>.</p>
-        <p>Please complete it on time.</p>
-      `;
-      await sendEmail(
-        userEmail,
-        `Reminder: ${task.title} deadline approaching`,
-        message
-      );
+            task.deadline
+          ).toLocaleString()}</strong>.</p>
+        <p>Please complete it on time.</p>`
+        );
+      }
     });
     return res
       .status(200)
       .json({ messag: `Reminder sent for ${tasks.length} tasks` });
   } catch (error) {
-    return res
-      .status(200)
-      .json({ messag: `Reminder sent for ${tasks.length} tasks` });
+    return res.status(400).json({ messag: `Reminder sent error`, error });
   }
 });

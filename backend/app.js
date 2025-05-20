@@ -40,3 +40,5 @@ app.use("/reminder", reminderRoutes);
 app.listen(PORT, () => {
   console.log(`Server running at port : ${PORT}`);
 });
+
+// startreminrCron();
