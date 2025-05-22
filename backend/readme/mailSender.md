@@ -277,15 +277,15 @@ The `cron.schedule` method is used to configure the schedule and define the task
 
 #### Implementation
 
-cron.schedule('12 0 \* \* \*', async () => {
-try {
-console.log("schedule start");
-await axios.post("http://localhost:3000/reminder/send-deadline-reminders");
-console.log("schedule end");
-} catch (error) {
-console.error("Cron Error : ", error);
-}
-});
+cron.schedule('12 0 \* \* \*', async () => {<br>
+try {<br>
+console.log("schedule start");<br>
+await axios.post("http://localhost:3000/reminder/send-deadline-reminders");<br>
+console.log("schedule end");<br>
+} catch (error) {<br>
+console.error("Cron Error : ", error);<br>
+}<br>
+});<br>
 
 #### Explanation of Schedule
 
@@ -306,7 +306,7 @@ Example with Time Zone:
 import cron from "node-cron";
 import { zonedTimeToUtc } from "date-fns-tz";
 
-cron.schedule("12 0 \* \* \*", async () => {
-const nowInGMT = zonedTimeToUtc(new Date(), "GMT");
-console.log("Task executed at (GMT):", nowInGMT);
+cron.schedule("12 0 \* \* \*", async () => { <br>
+const nowInGMT = zonedTimeToUtc(new Date(), "GMT");<br>
+console.log("Task executed at (GMT):", nowInGMT);<br>
 });
