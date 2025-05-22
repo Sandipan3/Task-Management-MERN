@@ -123,7 +123,7 @@ console.log("Error received that happened during mail send", error);
 
 Logs any errors encountered during the email-sending process.
 
-==========================================================================================================================================
+<hr>
 
 Now create the route and use it
 
@@ -228,7 +228,7 @@ json{
 "error": "Detailed error message"
 }
 
-==========================================================================================================================================
+<hr>
 
 # Documentation: Cron Job for Deadline Reminders
 
