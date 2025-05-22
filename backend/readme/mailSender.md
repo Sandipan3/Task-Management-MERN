@@ -240,6 +240,8 @@ The cron job executes a scheduled task daily at a specified time. It sends a POS
 
 ## Cron Time Syntax
 
+![cron-scheduler-format](image.png)
+
 Cron jobs use a five-field time format to specify the schedule. Below is the breakdown of each field and their possible values:
 
 | **Field**              | **Allowed Values**       | **Description**                         |
