@@ -8,7 +8,7 @@ export const router = express.Router();
 router.post("/send-deadline-reminders", async (req, res) => {
   try {
     const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
+    const taskName = req.query.taskName ? req.query.taskName : "Manual";
     // 1. user id match
     // 2. Date less than tomorrow < 24 hours (All completed as well as pending tasks  )
     // 3. completed = false  Filter out all completed tasks and considering all pending tasks
@@ -24,7 +24,7 @@ router.post("/send-deadline-reminders", async (req, res) => {
       if (user.email) {
         await sendEmail(
           user.email,
-          `Reminder: ${task.title} deadline approaching`,
+          `Reminder: ${task.title + "-" + taskName} deadline approaching`,
           `<h3>⏰ Task Reminder</h3>
         <p>Your task <strong>"${
           task.title

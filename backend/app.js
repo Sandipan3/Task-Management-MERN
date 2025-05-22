@@ -5,6 +5,7 @@ import { router as reminderRoutes } from "./routes/reminder.js";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { startreminderCron } from "./scheduler/reminder.js";
 dotenv.config();
 
 const app = express();
@@ -41,4 +42,5 @@ app.listen(PORT, () => {
   console.log(`Server running at port : ${PORT}`);
 });
 
-// startreminrCron();
+const CRON_JOB_SCHEDULE_SELECT = process.env.CRON_JOB_SCHEDULE_SELECT;
+startreminderCron(CRON_JOB_SCHEDULE_SELECT);

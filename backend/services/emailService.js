@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import { text } from "express";
 dotenv.config();
 
 //import environment variables
