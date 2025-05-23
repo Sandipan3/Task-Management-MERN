@@ -1,3 +1,4 @@
+//hero section
 import React from "react";
 
 const Header = () => {

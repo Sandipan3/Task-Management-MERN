@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import Task from "../pages/Task";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "tasks/:taskid",
+        element: <Task />,
+      },
+      {
+        path: "*",
+        element: <div>404 Error not found</div>,
       },
     ],
   },
