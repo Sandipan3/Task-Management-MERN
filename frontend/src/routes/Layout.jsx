@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 const Layout = () => {
   return (
-    <>
+    <section className="min-h-screen flex flex-col justify-between">
       <div>
         <Navbar />
       </div>
@@ -14,7 +14,7 @@ const Layout = () => {
       <div>
         <Footer />
       </div>
-    </>
+    </section>
   );
 };
 

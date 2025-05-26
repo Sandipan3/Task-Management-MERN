@@ -36,8 +36,17 @@ router.post(
     //get password and username
     const { username, email, password } = req.body;
 
-    // password hashing
     try {
+      const existingUser = await User.findOne({
+        $or: [{ username: username }, { email: email }],
+      });
+
+      if (existingUser) {
+        return res.status(400).json({
+          message: "User already exists!",
+        });
+      }
+      // password hashing
       const SECRET_KEY_HASH = parseInt(process.env.SECRET_KEY_HASH) || 10;
       const hashedPassword = await bcrypt.hash(password, SECRET_KEY_HASH);
 

@@ -1,14 +1,13 @@
 // all tasks based on user
-import React from "react";
+
 import TaskLineItems from "./TaskLineItems";
-import { Link } from "react-router-dom";
 
 const Tasks = () => {
   const tasks = [
     {
       _id: "681a51d3e9e4f6ac93ab2a16",
       title: "task1",
-      completed: "false",
+      completed: "true",
       deadline: "2025-05-15T00:00:00.000Z",
       remindAt: "2025-05-14T00:00:00.000Z",
       userId: {
@@ -33,9 +32,10 @@ const Tasks = () => {
   console.log(tasks[1]._id);
 
   return (
-    <div>
+    <div className=" flex items-center justify-center">
       <ul>
-        {tasks.map((task) => (<TaskLineItems
+        {tasks.map((task) => (
+          <TaskLineItems
             key={task._id}
             taskid={task._id}
             title={task.title}
