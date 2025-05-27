@@ -102,7 +102,7 @@ router.post(
 
     if (!user) {
       return res.status(401).json({
-        message: "user not found!!",
+        message: "User not found!!",
       });
     }
     // if user found then verify decrypted password
@@ -111,7 +111,7 @@ router.post(
     // if password mismatch send error message to ui
     if (!match) {
       return res.status(401).json({
-        message: "password invalid",
+        message: "Password invalid",
       });
     }
     // if password matched then generate JWT token

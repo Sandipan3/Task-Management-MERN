@@ -4,6 +4,11 @@ import jwt from "jsonwebtoken";
 //authMiddleWare for JWT token validation for protecting routes and resources (i.e. tasks)
 
 export function authMiddleWare(req, res, next) {
+  // console.log(req);
+  console.log("==================================");
+  console.log("req.header");
+  console.log(req.header("x-auth-token"));
+
   //get jwt auth token
   const token =
     req.header("x-auth-token") || req.headers.authorization?.split(" ")[1];
@@ -27,8 +32,10 @@ export function authMiddleWare(req, res, next) {
     req.user = decodedPayload;
     console.log("Middleware: User   " + req.user);
     console.log("Middleware: User id  " + req.user._id);
+    console.log("=================================");
 
     next();
+    console.log("=============================== next");
   } catch (error) {
     console.log(error);
     return res.status(403).json({

@@ -1,12 +1,31 @@
-# React + Vite
+#How to avoid XSS in both server and client side?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##Escaping output automatically in react because react escapes values by default in jsx
+That means suppose: JSX has below lines
 
-Currently, two official plugins are available:
+const user = {name: "<script>alert('xss')</script>" };
+return <div>Welcome, {user.name}</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React automatically escapes <script> ...</script> tags. So this render as plain text like below.
+So the script would not execute and no XSS attacks.
 
-## Expanding the ESLint configuration
+## Server side escaping
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+For example using handlebars for templating where the templating engine escapes special characters like:
+
+- <
+- >
+- "
+
+So here also script tag also will not become executable.
+
+<div>Welcome, &lt;script&gt;alert('xss')&lt;/script&gt;</div>
+
+<div>Welcome, {{user.name}}</div>
+Handlebars
+Special chars so these would not allow <Script>alert('xss')</>
+<
+>
+"
+
+WARNING: NEVER USE dangerouslySetInnerHTML as it disables escaping which is dangerous if user.name is an maliciously executable script

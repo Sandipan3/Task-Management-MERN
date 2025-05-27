@@ -1,6 +1,9 @@
 // all tasks based on user
 
+import { useEffect } from "react";
+import axios from "axios";
 import TaskLineItems from "./TaskLineItems";
+import tokenUtil from "../../util/tokenUtil";
 
 const Tasks = () => {
   const tasks = [
@@ -28,8 +31,20 @@ const Tasks = () => {
     },
   ];
 
-  console.log(tasks[0]._id);
-  console.log(tasks[1]._id);
+  // console.log(tasks[1]._id)
+  // console.log(tasks[0]._id);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/tasks", {
+        headers: {
+          // authorization: `bearer ${tokenUtil.getLocalStorageToken()}`,
+          "x-auth-token": `${tokenUtil.getLocalStorageToken()}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data));
+  }, []);
 
   return (
     <div className=" flex items-center justify-center">

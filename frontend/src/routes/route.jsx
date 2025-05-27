@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Home from "../pages/Home";
 import Task from "../pages/Task";
 import Auth from "../pages/Auth";
+import UserTasks from "../pages/UserTasks";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      // {
+      //   path: "/my-tasks/:userid",
+      //   element: <UserTasks />,
+      // },
       {
         path: "/register",
         element: <Auth />,

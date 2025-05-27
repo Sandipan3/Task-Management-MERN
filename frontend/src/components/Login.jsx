@@ -1,12 +1,19 @@
 //Login form display and invoke backend api to fetch data from UserSchema with password validation
 //UserSchema must send authorization token
 import { useState } from "react";
+import axios from "axios";
+import tokenUtil from "../../util/tokenUtil";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+
+  const initialState = {
     email: "",
     password: "",
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
 
   const changeHandler = (e) => {
     setFormData((prevState) => ({
@@ -17,7 +24,33 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     console.log("Logged in:", formData);
+
+    axios
+      .post("http://localhost:3000/login", formData)
+      .then((res) => {
+        const token = res.data.token;
+
+        tokenUtil.setLocalStorageToken(token);
+
+        toast.success("Log In Successful");
+        const userid = formData.email;
+        console.log(formData);
+
+        // setTimeout(() => navigate(`/my-tasks/${userid}`), 2000);
+        setTimeout(() => navigate("/"), 2000);
+      })
+      .catch((err) => {
+        console.error(err);
+
+        if (err.response.status === 401) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("Login failed!");
+        }
+      })
+      .finally(() => setFormData(initialState));
   };
 
   return (
