@@ -1,38 +1,40 @@
 // all tasks based on user
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import TaskLineItems from "./TaskLineItems";
 import tokenUtil from "../../util/tokenUtil";
 
 const Tasks = () => {
-  const tasks = [
-    {
-      _id: "681a51d3e9e4f6ac93ab2a16",
-      title: "task1",
-      completed: "true",
-      deadline: "2025-05-15T00:00:00.000Z",
-      remindAt: "2025-05-14T00:00:00.000Z",
-      userId: {
-        $oid: "6814fc17de0cef2c8a0ab996",
-      },
-      __v: 0,
-    },
-    {
-      _id: "681a51d3e9e4f6ac93ab2a17",
-      title: "task2",
-      completed: "false",
-      deadline: "2025-05-15T00:00:00.000Z",
-      remindAt: "2025-05-14T00:00:00.000Z",
-      userId: {
-        $oid: "6814fc17de0cef2c8a0ab996",
-      },
-      __v: 0,
-    },
-  ];
+  // const tasks = [
+  //   {
+  //     _id: "681a51d3e9e4f6ac93ab2a16",
+  //     title: "task1",
+  //     completed: "true",
+  //     deadline: "2025-05-15T00:00:00.000Z",
+  //     remindAt: "2025-05-14T00:00:00.000Z",
+  //     userId: {
+  //       $oid: "6814fc17de0cef2c8a0ab996",
+  //     },
+  //     __v: 0,
+  //   },
+  //   {
+  //     _id: "681a51d3e9e4f6ac93ab2a17",
+  //     title: "task2",
+  //     completed: "false",
+  //     deadline: "2025-05-15T00:00:00.000Z",
+  //     remindAt: "2025-05-14T00:00:00.000Z",
+  //     userId: {
+  //       $oid: "6814fc17de0cef2c8a0ab996",
+  //     },
+  //     __v: 0,
+  //   },
+  // ];
 
   // console.log(tasks[1]._id)
   // console.log(tasks[0]._id);
+
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     axios
@@ -43,7 +45,13 @@ const Tasks = () => {
           "Content-Type": "application/json",
         },
       })
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        console.log("[Tasks.jsx]==========");
+        console.log(res.data);
+        console.log(tasks);
+        console.log("==========");
+        setTasks(res.data);
+      });
   }, []);
 
   return (
@@ -72,3 +80,5 @@ const Tasks = () => {
 };
 
 export default Tasks;
+
+// fix for empty if availiable display your tasks
