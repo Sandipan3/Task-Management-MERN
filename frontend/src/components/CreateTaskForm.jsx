@@ -1,25 +1,24 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 const CreateTaskForm = () => {
   const initialState = {
     title: "",
-    completed: "false",
-    // deadline: Date.now(),
-    // remindAt: Date.now(),
+    completed: false,
     deadline: new Date(),
     remindAt: new Date(),
   };
   const [formData, setFormData] = useState(initialState);
-  const [checked, setChecked] = useState(false);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const changeHandler = (e) => {
+    const { name, type, checked, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -35,7 +34,7 @@ const CreateTaskForm = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col mx-auto items-center space-y-6 bg-white p-6 rounded-lg max-w-md w-full"
+      className="flex flex-col mx-auto items-center space-y-6 bg-slate-100 p-6 rounded-lg max-w-md w-full"
     >
       <div className="w-full">
         <label
@@ -55,10 +54,10 @@ const CreateTaskForm = () => {
         />
       </div>
 
-      <div className="w-full relative">
+      <div className="w-full">
         <label
           htmlFor="completed"
-          className="block  font-medium text-gray-700 mb-1 text-2xl"
+          className="block font-medium text-gray-700 mb-1 text-2xl"
         >
           Completed
         </label>
@@ -66,35 +65,28 @@ const CreateTaskForm = () => {
           type="checkbox"
           id="completed"
           name="completed"
-          value={formData.completed}
-          checked={checked}
-          onChange={(e) => setChecked(e.target.checked())}
-          className="w-full border border-gray-300 rounded-lg p-2 absolute"
+          checked={formData.completed}
+          onChange={changeHandler}
+          className="mr-2"
         />
+        <span>{formData.completed ? "Yes" : "No"}</span>
       </div>
 
       <div className="w-full">
         <label
           htmlFor="deadline"
-          className="block text-2xl font-medium text-gray-700 mb-1 "
+          className="block text-2xl font-medium text-gray-700 mb-1"
         >
           Deadline
         </label>
         <DatePicker
-          selectedDate={formData.deadline}
-          onChange={(date) => setFormData({ ...formData, deadline: date })}
+          selected={formData.deadline}
+          onChange={(date) =>
+            setFormData((prevState) => ({ ...prevState, deadline: date }))
+          }
           minDate={today}
-          placeholder="Select from Today onwards"
-        ></DatePicker>
-        {/* <input
-          type="date"
-          id="deadline"
-          name="deadline"
-          value={formData.deadline}
-          onChange={changeHandler}
-          className="w-full border border-gray-300 rounded-lg p-2 "
-           min={}
-        /> */}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        />
       </div>
 
       <div className="w-full">
@@ -104,13 +96,13 @@ const CreateTaskForm = () => {
         >
           Remind At
         </label>
-        <input
-          type="date"
-          id="remindAt"
-          name="remindAt"
-          alue={formData.deadline}
-          onChange={changeHandler}
-          className="w-full border border-gray-300 rounded-lg p-2 "
+        <DatePicker
+          selected={formData.remindAt}
+          onChange={(date) =>
+            setFormData((prevState) => ({ ...prevState, remindAt: date }))
+          }
+          minDate={today}
+          className="w-full border border-gray-300 rounded-lg p-2"
         />
       </div>
 
@@ -123,5 +115,12 @@ const CreateTaskForm = () => {
     </form>
   );
 };
-
 export default CreateTaskForm;
+
+/*
+<DatePicker
+          selectedDate={formData.deadline}
+          onChange={(date) => setFormData({ ...formData, deadline: date })}
+          minDate={today}
+          placeholder="Select from Today onwards"
+        ></DatePicker> */
